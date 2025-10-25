@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Optimizer Pro - Painel Avançado</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffcc02);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card h3 { color: #ff6b35; margin-bottom: 15px; font-size: 1.2em; }
+        .toggle-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .toggle { position: relative; width: 50px; height: 26px; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.1); transition: 0.4s; border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+            background: #ffffff; transition: 0.4s; border-radius: 50%;
+        }
+        .toggle input:checked + .toggle-slider { background: linear-gradient(45deg, #ff6b35, #f7931e); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(24px); }
+        .btn {
+            padding: 12px 25px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; font-size: 1em; width: 100%; margin-top: 10px;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white; box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4); }
+        .code-display {
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 10px; padding: 12px; margin-top: 12px; font-family: 'Courier New', monospace;
+            font-size: 0.85em; max-height: 180px; overflow-y: auto;
+        }
+        .code-line { margin-bottom: 4px; opacity: 0.8; }
+        .code-line.active { color: #22c55e; opacity: 1; }
+        .status-indicator {
+            display: inline-flex; align-items: center; gap: 5px; margin-left: 8px;
+            padding: 3px 10px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px; font-size: 0.8em; transition: all 0.3s ease;
+        }
+        .status-indicator.active { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-indicator.inactive { background: rgba(156, 163, 175, 0.1); border-color: rgba(156, 163, 175, 0.3); color: #9ca3af; }
+        .button-group { display: flex; gap: 12px; margin-top: 15px; }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.8em; }
+            .button-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 FF OPTIMIZER PRO</h1>
+            <p style="margin: 10px 0; opacity: 0.8;">Painel Avançado - OB50 Compatible 😈🕺</p>
+        </div>
+
+        <div class="grid">
+            <!-- AIMBOT CODES -->
+            <div class="card">
+                <h3>🎯 AimBot System</h3>
+                
+                <div class="toggle-container">
+                    <span>AimBot 100% Grudar <span class="status-indicator inactive" id="aimbotStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="aimbot" onchange="updateAimbot()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-container">
+                    <span>Não Passa da Cabeça <span class="status-indicator inactive" id="headLimitStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="headLimit" onchange="updateHeadLimit()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-container">
+                    <span>Mira Não Treme <span class="status-indicator inactive" id="noShakeStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="noShake" onchange="updateNoShake()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="code-display">
+                    <div class="code-line" id="touchDXCode">TouchMoveDX = <span id="touchDXValue">1000C030</span></div>
+                    <div class="code-line" id="touchDYCode">TouchMoveDY = <span id="touchDYValue">1000C034</span></div>
+                    <div class="code-line" id="recoilCode">MouseGetRecoil = <span id="recoilValue">NULL</span></div>
+                    <div class="code-line" id="dwordCode">DWORD Base = <span id="dwordValue">9900909</span></div>
+                    <div class="code-line" id="headLimitCode">HeadLimit = <span id="headLimitValue">false</span></div>
+                </div>
+            </div>
+
+            <!-- LAUNCH BUTTONS -->
+            <div class="card">
+                <h3>🚀 Lançar Jogo</h3>
+                
+                <div class="button-group" style="flex-direction: column;">
+                    <button class="btn btn-primary" onclick="launchFFNormal()">🎮 Abrir Free Fire (Normal)</button>
+                    <button class="btn btn-primary" onclick="launchFFMax()">🔥 Abrir Free Fire MAX</button>
+                </div>
+
+                <div class="code-display" style="margin-top: 15px;">
+                    <div class="code-line">Package: com.dts.freefireth</div>
+                    <div class="code-line">Package Max: com.dts.freefiremax</div>
+                    <div class="code-line">Touch Precision: FFMainActivity</div>
+                    <div class="code-line">Touch Velocity: FFMainActivity</div>
+                </div>
+            </div>
+
+            <!-- CALIBRAGEM -->
+            <div class="card">
+                <h3>🎯 Calibragem de Mira Pro</h3>
+                
+                <div class="toggle-container">
+                    <span>NoRecoil System <span class="status-indicator inactive" id="norecoilStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="norecoil" onchange="updateNoRecoil()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-container">
+                    <span>75% Puxa Pro Cabeça <span class="status-indicator inactive" id="headpullStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="headpull" onchange="updateHeadPull()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="toggle-container">
+                    <span>20% Não Pinar <span class="status-indicator inactive" id="antipinStatus">INATIVO</span></span>
+                    <label class="toggle"><input type="checkbox" id="antipin" onchange="updateAntiPin()"><span class="toggle-slider"></span></label>
+                </div>
+
+                <div class="code-display">
+                    <div class="code-line" id="norecoilCode">norecoil = <span id="norecoilValue">false</span></div>
+                    <div class="code-line" id="headpullCode">headpull = <span id="headpullValue">0</span>%</div>
+                    <div class="code-line" id="antipinCode">antipin = <span id="antipinValue">0</span>%</div>
+                </div>
+            </div>
+
+            <!-- REGISTRY CODES -->
+            <div class="card">
+                <h3>📋 Registry Codes</h3>
+                
+                <div class="code-display" style="max-height: 250px;">
+                    <div class="code-line">[DWORD AimBot: 00001] = 000009</div>
+                    <div class="code-line">[DWORD AimBot: 00002] = Mira-No-Treme</div>
+                    <div class="code-line">[DWORD AimBot: 00003] = Mira-Pesada</div>
+                    <div class="code-line">[DWORD AimBot: 00004] = VIP Mode</div>
+                    <div class="code-line">[DWORD AimBot: 00005] = Mira-Grudar-100%</div>
+                    <div class="code-line">[DWORD AimBot: 00006] = Mira-Segurar-Cabeça</div>
+                    <div class="code-line">[DWORD AimBot: 00007] = SuperLock VIP</div>
+                    <div class="code-line">[DWORD AimBot: 00008] = HeadKill 100%</div>
+                    <div class="code-line">[DWORD AimBot: 00009] = PathConfig 100%</div>
+                    <div class="code-line">MouseSensitivity = 4</div>
+                    <div class="code-line">CPU = dword:00000064</div>
+                    <div class="code-line">DPI = dword:000000a0</div>
+                    <div class="code-line">FOV = dword:0020f580</div>
+                    <div class="code-line">sensitivity = dword:00000064</div>
+                </div>
+
+                <button class="btn btn-primary" onclick="copyRegistryCodes()">📋 Copiar Registry Codes</button>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; opacity: 0.7;">
+            <p>© 2025 FF Optimizer Pro v3.0 - OB50 Compatible</p>
+        </div>
+    </div>
+
+    <script>
+        // CÓDIGOS DE MIRA AIMBOT
+        const AIMBOT_CODES = {
+            TouchMoveDX: "1000C030",
+            TouchMoveDY: "1000C034",
+            MouseGetRecoil: "NULL",
+            DWORDBase: "9900909",
+            DWORD_00001: "000009",
+            DWORD_00002: "Mira-No-Treme",
+            DWORD_00003: "Mira-Pesada",
+            DWORD_00004: "VIP-Mode",
+            DWORD_00005: "Mira-Grudar-100%",
+            DWORD_00006: "Mira-Segurar-Cabeça",
+            DWORD_00007: "SuperLock-VIP",
+            DWORD_00008: "HeadKill-100%",
+            DWORD_00009: "PathConfig-100%",
+            HeadLimitMax: "90deg", // NÃO PASSA DA CABEÇA
+            HeadLimitOffset: "0px"
+        };
+
+        // CÓDIGO NÃO PASSA DA CABEÇA
+        const HEAD_LIMIT_CODE = {
+            enabled: false,
+            maxAngle: 90,
+            lockHeight: "head_top",
+            preventOvershoot: true,
+            smoothTransition: 0.3
+        };
+
+        function updateAimbot() {
+            const checkbox = document.getElementById('aimbot');
+            const status = document.getElementById('aimbotStatus');
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                document.getElementById('touchDXCode').classList.add('active');
+                document.getElementById('touchDYCode').classList.add('active');
+                document.getElementById('dwordCode').classList.add('active');
+                showNotification('✅ AimBot 100% ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+                document.getElementById('touchDXCode').classList.remove('active');
+                document.getElementById('touchDYCode').classList.remove('active');
+                document.getElementById('dwordCode').classList.remove('active');
+            }
+        }
+
+        function updateHeadLimit() {
+            const checkbox = document.getElementById('headLimit');
+            const status = document.getElementById('headLimitStatus');
+            const codeValue = document.getElementById('headLimitValue');
+            
+            HEAD_LIMIT_CODE.enabled = checkbox.checked;
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                codeValue.textContent = 'true [90deg limit]';
+                document.getElementById('headLimitCode').classList.add('active');
+                showNotification('🎯 NÃO PASSA DA CABEÇA ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+                codeValue.textContent = 'false';
+                document.getElementById('headLimitCode').classList.remove('active');
+            }
+        }
+
+        function updateNoShake() {
+            const checkbox = document.getElementById('noShake');
+            const status = document.getElementById('noShakeStatus');
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                showNotification('✅ Mira Não Treme ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+            }
+        }
+
+        function updateNoRecoil() {
+            const checkbox = document.getElementById('norecoil');
+            const status = document.getElementById('norecoilStatus');
+            const codeValue = document.getElementById('norecoilValue');
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                codeValue.textContent = 'true';
+                document.getElementById('norecoilCode').classList.add('active');
+                document.getElementById('recoilCode').classList.add('active');
+                showNotification('🎯 NoRecoil ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+                codeValue.textContent = 'false';
+                document.getElementById('norecoilCode').classList.remove('active');
+                document.getElementById('recoilCode').classList.remove('active');
+            }
+        }
+
+        function updateHeadPull() {
+            const checkbox = document.getElementById('headpull');
+            const status = document.getElementById('headpullStatus');
+            const codeValue = document.getElementById('headpullValue');
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                codeValue.textContent = '75';
+                document.getElementById('headpullCode').classList.add('active');
+                showNotification('🎯 75% Puxa Cabeça ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+                codeValue.textContent = '0';
+                document.getElementById('headpullCode').classList.remove('active');
+            }
+        }
+
+        function updateAntiPin() {
+            const checkbox = document.getElementById('antipin');
+            const status = document.getElementById('antipinStatus');
+            const codeValue = document.getElementById('antipinValue');
+            
+            if (checkbox.checked) {
+                status.textContent = 'ATIVO';
+                status.className = 'status-indicator active';
+                codeValue.textContent = '20';
+                document.getElementById('antipinCode').classList.add('active');
+                showNotification('🛡️ 20% Não Pinar ATIVADO!');
+            } else {
+                status.textContent = 'INATIVO';
+                status.className = 'status-indicator inactive';
+                codeValue.textContent = '0';
+                document.getElementById('antipinCode').classList.remove('active');
+            }
+        }
+
+        function launchFFNormal() {
+            showNotification('🚀 Abrindo Free Fire (Normal)...');
+            
+            // Simular abertura do jogo
+            setTimeout(() => {
+                const intent = 'intent://com.dts.freefireth#Intent;scheme=freefireth;package=com.dts.freefireth;end';
+                try {
+                    window.location.href = intent;
+                } catch(e) {
+                    showNotification('ℹ️ Abra Free Fire manualmente no seu dispositivo');
+                }
+            }, 500);
+        }
+
+        function launchFFMax() {
+            showNotification('🔥 Abrindo Free Fire MAX...');
+            
+            // Simular abertura do jogo
+            setTimeout(() => {
+                const intent = 'intent://com.dts.freefiremax#Intent;scheme=freefiremax;package=com.dts.freefiremax;end';
+                try {
+                    window.location.href = intent;
+                } catch(e) {
+                    showNotification('ℹ️ Abra Free Fire MAX manualmente no seu dispositivo');
+                }
+            }, 500);
+        }
+
+        function copyRegistryCodes() {
+            const codes = `TouchMoveDX = ${AIMBOT_CODES.TouchMoveDX}
+TouchMoveDY = ${AIMBOT_CODES.TouchMoveDY}
+MouseGetRecoil = ${AIMBOT_CODES.MouseGetRecoil}
+DWORD Base = ${AIMBOT_CODES.DWORDBase}
+DWORD 00001 = ${AIMBOT_CODES.DWORD_00001}
+DWORD 00002 = ${AIMBOT_CODES.DWORD_00002}
+DWORD 00003 = ${AIMBOT_CODES.DWORD_00003}
+DWORD 00004 = ${AIMBOT_CODES.DWORD_00004}
+DWORD 00005 = ${AIMBOT_CODES.DWORD_00005}
+DWORD 00006 = ${AIMBOT_CODES.DWORD_00006}
+DWORD 00007 = ${AIMBOT_CODES.DWORD_00007}
+DWORD 00008 = ${AIMBOT_CODES.DWORD_00008}
+DWORD 00009 = ${AIMBOT_CODES.DWORD_00009}
+HeadLimit = ${AIMBOT_CODES.HeadLimitMax}`;
+
+            navigator.clipboard.writeText(codes).then(() => {
+                showNotification('📋 Registry Codes copiados!');
+            });
+        }
+
+        function showNotification(message) {
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) existingNotif.remove();
+
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.style.cssText = 'position: fixed; top: 20px; right: 20px; background: linear-gradient(45deg, #22c55e, #16a34a); color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; animation: slideIn 0.3s ease;';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        // Adicionar estilos de animação
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+        `;
+        document.head.appendChild(style);
+
+        // Log de inicialização
+        console.log('🔥 FF Optimizer Pro carregado!');
+        console.log('📦 Códigos de Aimbot:', AIMBOT_CODES);
+        console.log('🎯 Head Limit System:', HEAD_LIMIT_CODE);
+    </script>
+</body>
+  </html>
